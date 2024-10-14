@@ -94,7 +94,7 @@ public class Railway
     public int FindShortestRoute(string start, string end)
     {
         return GetRoutes(start, end)
-            .OrderBy(x => x.Length)
+            .OrderBy(x => x.Distance)
             .First()?
             .Distance ?? -1;
     }

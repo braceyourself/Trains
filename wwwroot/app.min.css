@@ -622,6 +622,11 @@ video {
   margin-bottom: 2.5rem;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .mb-12 {
   margin-bottom: 3rem;
 }
@@ -648,6 +653,10 @@ video {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
 }
 
 .block {
@@ -704,6 +713,14 @@ video {
   width: fit-content;
 }
 
+.w-5 {
+  width: 1.25rem;
+}
+
+.w-20 {
+  width: 5rem;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
@@ -758,6 +775,10 @@ video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .rounded {
@@ -1043,12 +1064,35 @@ html{
 }
 
 @media (min-width: 768px) {
+  .md\:w-\[init\] {
+    width: init;
+  }
+
+  .md\:w-min {
+    width: -moz-min-content;
+    width: min-content;
+  }
+
+  .md\:w-fit {
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+
+  .md\:w-auto {
+    width: auto;
+  }
+
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 
