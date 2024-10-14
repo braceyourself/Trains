@@ -1,0 +1,28 @@
+<div class="@Classes" @attributes="AdditionalAttributes">
+    <div class="text-white flex flex-col md:flex-row text-center justify-between w-full">
+        @foreach (var route in Routes)
+        {
+            <NavLink
+                ActiveClass="!bg-secondary"
+                class="bg-primary uppercase text-lg transition-[background-color] p-2 px-4 hover:bg-secondary block flex-grow drop-shadow"
+                href="@route.Value">
+                @route.Key
+            </NavLink>
+        }
+    </div>
+</div>
+
+@code{
+
+    public Dictionary<string, object> Routes { get; set; } = new Dictionary<string, object>
+    {
+        { "Calculate distance", "/distance-calculator" },
+        { "Count unique routes", "/unique-routes" },
+        { "Find Shortest Route", "/shortest-route" }
+    };
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; }
+
+    [Parameter] public string Classes { get; set; }
+}

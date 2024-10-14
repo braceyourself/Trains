@@ -1,0 +1,85 @@
+@page "/shortest-route"
+@rendermode InteractiveServer
+
+<div class="text-2xl font-bold">Shortest Route Calculator</div>
+
+<div class="my-10">
+    <label class="inline-block">
+        <div>Start</div>
+        <input type="text" @bind="Start" class="p-2 rounded focus:outline-0"
+               x-data="{value: '@Start'}"
+               x-model="value"
+               x-on:input="value = $event.target.value.toUpperCase()"
+               maxlength="1"
+               x-on:click="() => $event.target.select()"/>
+    </label>
+
+    <label class="inline-block">
+        <div>End</div>
+        <input type="text" @bind="End" class="p-2 rounded focus:outline-0"
+               x-data="{value: '@End'}"
+               x-model="value"
+               x-on:input="value = $event.target.value.toUpperCase()"
+               maxlength="1"
+               x-on:click="() => $event.target.select()"/>
+    </label>
+
+    <button class="bg-secondary text-white p-2 px-5 rounded" @onclick="Run">
+        Calculate Shortest Route
+    </button>
+
+
+    @if (Error.Length > 0)
+    {
+        <div class="bg-red-500 text-white rounded p-3 mt-3">
+            @Error
+        </div>
+    }
+    else if (Result.Length > 0)
+    {
+        <div class="bg-secondary text-white rounded p-3 mt-3">
+            <div>
+                The length of the shortest route (in terms of distance to travel) from @Start and @End:
+            </div>
+            <span class="text-3xl">@Result</span>
+        </div>
+    }
+</div>
+
+
+@code {
+    string Result = "";
+    string Error = "";
+
+    string Start = "";
+    string End = "";
+
+    Railway _railway = new Railway();
+
+    protected override void OnInitialized()
+    {
+        //
+    }
+
+    public void Run()
+    {
+        try
+        {
+            Result = "";
+            Error = "";
+
+            if (Start.Length != 1 || End.Length != 1)
+            {
+                Error = "Invalid input";
+                return;
+            }
+
+            Result = _railway.FindShortestRoute(Start, End).ToString();
+        }
+        catch (Exception e)
+        {
+            Error = $"Could Not Find Shortest Route between {Start} and {End}"; 
+        }
+    }
+
+}

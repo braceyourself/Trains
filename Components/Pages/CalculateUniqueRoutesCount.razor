@@ -1,0 +1,225 @@
+@page "/unique-routes"
+@using System.Text.RegularExpressions
+@rendermode InteractiveServer
+
+<div class=" text-2xl font-bold">Route Counter</div>
+
+<div class="text-2xl mt-10">Filters</div>
+<div class="text-xs text-gray-600 mb-2">Filters set to 0 are ignored.</div>
+
+
+<div class="flex gap-3">
+    <div class="bg-gray-300 p-5 rounded-xl">
+        <div class="text-xl underline">Stops</div>
+        <div class="">
+            <label class="inline-block">
+                <input type="number" @bind="Stops" class="p-2 rounded focus:outline-0"
+                       x-data x-on:click="() => $event.target.select()"/>
+            </label>
+
+            <label class="inline-block">
+                <div>Exact</div>
+                <button @onclick="() => Exact = !Exact"
+                        x-text="'@(Exact ? "Yes" : "No")'"
+                        class="p-2 rounded text-white @(Exact ? "bg-green-500" : "bg-red-500")">
+                </button>
+            </label>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-300 p-5 rounded-xl">
+        <div class="text-xl underline">Distance</div>
+        <div>
+            <span>
+                Total Distance
+            </span>
+            <label class="inline-block">
+                <button @onclick="() => DistanceOperator = GetNextOperator(DistanceOperator)"
+                        x-text="'@(DistanceOperator)'"
+                        class="p-2 rounded text-white bg-primary">
+                </button>
+                <div class="text-xs absolute pt-1 text-gray-600">
+                    Click on the operator to change it
+                </div>
+            </label>
+
+            <label class="inline-block">
+                <input type="number"
+                       @bind="Distance"
+                       class="p-2 rounded focus:outline-0"
+                       x-data x-on:click="() => $event.target.select()"/>
+            </label>
+
+        </div>
+    </div>
+</div>
+
+<div class="my-10">
+    <label class="inline-block">
+        <div>Start</div>
+        <input type="text" @bind="Start" class="p-2 rounded focus:outline-0"
+               x-data="{value: '@Start'}"
+               x-model="value"
+               x-on:input="value = $event.target.value.toUpperCase()"
+               maxlength="1"
+               x-on:click="() => $event.target.select()"/>
+    </label>
+
+    <label class="inline-block">
+        <div>End</div>
+        <input type="text" @bind="End" class="p-2 rounded focus:outline-0"
+               x-data="{value: '@End'}"
+               x-model="value"
+               x-on:input="value = $event.target.value.toUpperCase()"
+               maxlength="1"
+               x-on:click="() => $event.target.select()"/>
+    </label>
+
+    <button class="bg-secondary text-white p-2 px-5 rounded" @onclick="Run">
+        Count Unique Routes
+    </button>
+
+
+    <div>
+        @if (Error.Length > 0)
+        {
+            <div class="bg-danger p-3 rounded mt-3 text-white">
+                @Error
+            </div>
+        }
+        else if (Results.Count > 0)
+        {
+            <div class="bg-secondary p-3 rounded mt-3 text-white">
+                <div class="flex justify-between items-center">
+                    <span>
+                        Number of unique routes from @Start to @End
+                        @if (Stops > 0)
+                        {
+                            <span>&nbsp;with @(Exact ? "exactly" : "a maximum of") @Stops stops</span>
+                        }
+
+                        @if (Distance > 0)
+                        {
+                            <span>&nbsp;@(Stops > 0 ? "and" : "with") a distance of @(DistanceOperatorOptions[DistanceOperator]) @Distance</span>
+                        }
+
+                        <div class="text-3xl">
+                            @Results.Count
+                        </div>
+                    </span>
+
+                    <button @onclick="() => showRoutes = !showRoutes"
+                            class="p-2 rounded text-white block bg-primary ring-0 ">
+                        @(showRoutes ? "Hide" : "Show") Routes
+                    </button>
+                </div>
+
+                @if (showRoutes)
+                {
+                    <div class="text-center">
+                        @foreach (var route in Results)
+                        {
+                            <div>@route.Path</div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    List<Route> Results = new List<Route>();
+    bool showRoutes = false;
+
+    string Error = "";
+    string Start = "";
+    string End = "";
+
+    Railway _railway = new Railway();
+    public int Stops { get; set; }
+    public int Distance { get; set; }
+    public bool Exact { get; set; }
+    public string DistanceOperator { get; set; } = "<";
+
+    public Dictionary<string, string> DistanceOperatorOptions { get; set; } = new Dictionary<string, string>
+    {
+        { "<", "less than" },
+        { "=", "equal to" }
+    };
+
+    public void Run()
+    {
+        try
+        {
+            Results = new List<Route>();
+            Error = "";
+
+            if (Start.Length != 1 || End.Length != 1)
+            {
+                Error = "Invalid input";
+                return;
+            }
+
+
+            var routes = _railway.GetRoutes(Start, End);
+
+            if (routes.Count == 0)
+            {
+                Error = "No routes found";
+                return;
+            }
+
+            if (Distance > 0)
+            {
+                switch (DistanceOperator)
+                {
+                    case "<":
+                        routes = routes.Where(x => x.Distance < Distance).ToList();
+                        break;
+                    case "=":
+                        routes = routes.Where(x => x.Distance == Distance).ToList();
+                        break;
+                }
+            }
+
+            if (Stops > 0)
+            {
+                routes = Exact
+                    ? routes.Where(x => x.StopCount == Stops).ToList()
+                    : routes.Where(x => x.StopCount <= Stops).ToList();
+            }
+
+            Results = routes;
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+    }
+
+    public void StateHasChanged()
+    {
+        base.StateHasChanged();
+        
+        showRoutes = false;
+        Results = new List<Route>();
+        Error = "";
+    }
+
+    // loop through the dictionary and get the next operator
+    private string GetNextOperator(string distanceOperator)
+    {
+        var keys = DistanceOperatorOptions.Keys.ToList();
+        var index = keys.IndexOf(distanceOperator);
+
+        if (index == keys.Count - 1)
+        {
+            return keys[0];
+        }
+
+        return keys[index + 1];
+    }
+
+}

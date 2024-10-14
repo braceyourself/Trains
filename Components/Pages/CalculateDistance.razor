@@ -1,0 +1,127 @@
+﻿@page "/distance-calculator"
+@using System.Collections
+@rendermode InteractiveServer
+
+<PageTitle>Route Distance Calculator</PageTitle>
+
+<div class="container h-full my-10 mx-auto flex flex-col justify-center gap-3">
+    <h3 class="text-3xl">Route Distance Calculator</h3>
+
+
+    <div class="flex flex-col md:flex-row gap-2 flex-wrap">
+
+        @foreach (var (key, value) in Stops)
+        {
+            <div class="p-2 rounded bg-white cursor-text flex flex-row relative"
+                 x-data="{value: '@value', showRemove: false}"
+                 x-on:mouseover="showRemove = true"
+                 x-on:mouseout="showRemove = false"
+                 x-on:click="() => $refs.input.select()">
+
+                <input class="focus:outline-none p-0 m-0 bg-transparent border-none"
+                       @oninput="(e) => SetStopValue(e, key)"
+                       x-ref="input"
+                       x-model="value"
+                       x-on:input="value = $event.target.value.toUpperCase()"
+                       maxlength="1"/>
+
+                <span x-cloak x-show="showRemove" @onclick="() => RemoveStop(key)" class="cursor-pointer absolute right-0 top-0 p-2">
+                    X
+                </span>
+            </div>
+        }
+
+        <button class="h-full text-2xl align-middle"
+                x-tooltip="Add a stop"
+                type="button"
+                @onclick='() => AddStop()'>
+            +
+        </button>
+
+
+    </div>
+
+    <button class="bg-secondary text-white p-2 px-5 rounded" @onclick="Run">
+        Calculate Distance
+    </button>
+
+    @if (Result.Length > 0)
+    {
+        <div class="text-white bg-secondary rounded p-3 mt-3">
+            The distance of the route @Stops.Values.Select(x => x).Aggregate((x, y) => $"{x}-{y}"):
+            <div class="text-3xl">
+                @Result
+            </div>
+        </div>
+    }
+    else if (Error.Length > 0)
+    {
+        <div class="text-white bg-danger rounded p-3 mt-3">
+            @Error
+        </div>
+    }
+</div>
+
+
+@code {
+    private string Result = "";
+    private string Error = "";
+
+    public Dictionary<int, string> Stops = new Dictionary<int, string>();
+    public Railway Railway = new Railway();
+
+    protected override void OnInitialized()
+    {
+        // Add some
+        AddStop();
+        AddStop();
+    }
+
+    private void Run()
+    {
+        Reset();
+        
+        int res;
+
+        try
+        {
+            res = new Route(Stops, Railway).Distance;
+
+            if (res < 0)
+            {
+                throw new Exception("NO SUCH ROUTE");
+            }
+
+            Result = res.ToString();
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
+    }
+
+    private void AddStop(string stop = "")
+    {
+        Stops.Add(Stops.Count, stop);
+        Reset();
+    }
+
+    private void RemoveStop(int key)
+    {
+        Stops.Remove(key);
+        Reset();
+    }
+
+    private void Reset()
+    {
+        Result = "";
+        Error = "";
+    }
+
+    private void SetStopValue(ChangeEventArgs e, int key)
+    {
+        Stops[key] = e.Value.ToString();
+        Reset();
+    }
+
+}

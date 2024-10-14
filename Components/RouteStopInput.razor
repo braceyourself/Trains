@@ -1,0 +1,59 @@
+<div x-data="{value: '@Value'}">
+    <input
+        @bind="Value"
+        @oninput="OnInputChange"
+        maxlength="1"
+        x-model="value"
+        x-on:input="value = value.toUpperCase()"
+        @attributes="mergedAttributes"/>
+</div>
+
+@if (Stop.Length > 0)
+{
+    <div>
+        STOP: @Stop.ToString()
+    </div>
+}
+
+@code {
+
+    // Define a parameter to hold the value
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string Stop { get; set; }
+
+
+    // Define an attribute to hold additional attributes
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
+
+    private Dictionary<string, object> mergedAttributes
+    {
+        get
+        {
+            Attributes["class"] = $"p-2 rounded focus:outline-none {Attributes.GetValueOrDefault("class", "")}";
+
+            return Attributes;
+        }
+    }
+
+
+    // Define an EventCallback to propagate the changes to the parent
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    // This method is called when the input changes
+    private async Task OnInputChange(ChangeEventArgs e)
+    {
+        // Update the internal value
+        Value = e.Value.ToString();
+
+        // limit input to 1 character
+        if (Value.Length > 1)
+        {
+            Value = Value.Substring(0, 1);
+        }
+
+        // Emit the change event to the parent
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+}
