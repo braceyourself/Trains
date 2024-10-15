@@ -1,0 +1,70 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="container mx-auto px-4 py-12">
+
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800">Welcome to Kiwiland Train Tools</h1>
+        <p class="mt-4 text-xl text-gray-600">
+            Empowering railway operators and travelers with advanced route calculation solutions.
+        </p>
+    </header>
+
+    <!-- Features Section -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        
+        <NavLink href="/distance-calculator" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Route Distance Calculator</h2>
+            <p class="text-gray-600">
+                Effortlessly calculate the total distance of any given train route across Kiwiland’s interconnected towns.
+            </p>
+        </NavLink>
+        
+        <NavLink href="/unique-routes" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Unique Route Finder</h2>
+            <p class="text-gray-600">
+                Discover the number of unique routes between two towns, with customizable stop limits to meet your travel or logistical needs.
+            </p>
+        </NavLink>
+        <NavLink href="/shortest-route" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Shortest Path Finder</h2>
+            <p class="text-gray-600">
+                Instantly determine the shortest route between any two towns, saving time and optimizing travel efficiency.
+            </p>
+        </NavLink>
+    </section>
+
+    <!-- Customizable Filters Section -->
+    <section class="bg-blue-100 p-6 rounded-lg mb-12 text-center">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Customizable Route Filters</h2>
+        <p class="text-gray-600">
+            Filter routes based on exact stop counts, maximum distance, and more to tailor your rail journey.
+        </p>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">How It Works</h2>
+        <p class="text-lg text-gray-600 text-center">
+            Simply input your start and end towns, and let <strong>Kiwiland Tools</strong> do the rest! Whether you need to calculate direct distances or uncover all the hidden routes between towns, our platform provides you with all the data you need.
+        </p>
+    </section>
+
+    <!-- Why Kiwiland Tools Section -->
+    <section class="bg-white p-6 rounded-lg shadow-md text-center mb-12">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Why Kiwiland Tools?</h2>
+        <p class="text-lg text-gray-600">
+            We understand the complexity of Kiwiland’s unique one-way railway system. Our goal is to make route planning effortless and insightful, whether for individual travelers or rail operators.
+        </p>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="text-center">
+        <a href="#" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600">
+            Start Planning Your Routes Today!
+        </a>
+    </section>
+
+</div>

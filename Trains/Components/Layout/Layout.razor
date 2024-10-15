@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+
+<div class="flex flex-col justify-between min-h-screen bg-gray-200">
+    <div class="text-white w-full top-0 bg-primary text-4xl">
+        <div class="flex justify-between p-5">
+            <NavLink href="/" class="font-bold hover:text-secondary transition-colors">Kiwiland Rails</NavLink>
+            <a href="https://www.dealeron.com/" target="_blank">
+                <img src="images/dealeron.png" alt="dealeron" class="max-h-10">
+            </a>
+        </div>
+        
+        <Nav  class="flex gap-5" />
+    </div>
+
+
+    <main class="w-full h-full flex-grow bg-gradient-to-bl from-gray-400 to-gray-200">
+        <div class="container mx-auto my-10 px-5 ">
+            @Body
+        </div>
+    </main>
+
+    <footer>
+        <div class="bg-primary text-white text-center p-5">
+            <p>© @DateTime.Now.Year Kiwiland Rails - Ethan Brace</p>
+        </div>
+    </footer>
+</div>

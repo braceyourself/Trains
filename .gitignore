@@ -1,0 +1,14 @@
+/.idea
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+Trains.sln.DotSettings.user
+node_modules
+/.vs/Trains/CopilotIndices/0.2.1657.32929
+/.vs
+/Backup
+/UpgradeLog.htmUpgradeLog.htm
+Trains/Backup
+Trains/.vs/

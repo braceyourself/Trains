@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+    font-family: Arial, serif;
+}
+
+[x-cloak] {
+    display: none !important;
+}

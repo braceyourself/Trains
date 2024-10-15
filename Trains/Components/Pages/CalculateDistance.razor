@@ -1,0 +1,92 @@
+﻿@page "/distance-calculator"
+@using System.Collections
+@rendermode InteractiveServer
+
+<PageTitle>Route Distance Calculator</PageTitle>
+
+<h3 class="text-3xl">Route Distance Calculator</h3>
+
+<p class="text-gray-600">
+    Calculate the total distance of any given train route across Kiwiland’s interconnected towns.
+</p>
+<p class="text-gray-600">
+    Enter the stops in the route and click the button to calculate the distance.
+</p>
+
+
+<div class="container h-full my-10 mx-auto flex flex-col justify-center gap-3">
+
+    <div class="flex flex-col gap-2 flex-wrap">
+
+        <div class="p-2 w-full md:w-min rounded bg-white cursor-text flex flex-row relative"
+             x-data="{value: '@Stops'}" x-on:click="() => $refs.input.select()">
+
+            <input class="focus:outline-none p-0 m-0 bg-transparent border-none"
+                   @bind="Stops"
+                   x-ref="input"
+                   x-model="value"
+                   x-on:input="value = $event.target.value.toUpperCase()"/>
+        </div>
+
+    </div>
+
+    <button class="bg-secondary text-white p-2 px-5 rounded" @onclick="Run">
+        Calculate Distance
+    </button>
+
+    @if (Result.Length > 0)
+    {
+        <div class="text-white bg-secondary rounded p-3 mt-3">
+            The distance of the route @Stops:
+            <div class="text-3xl">
+                @Result
+            </div>
+        </div>
+    }
+    else if (Error.Length > 0)
+    {
+        <div class="text-white bg-danger rounded p-3 mt-3">
+            @Error
+        </div>
+    }
+</div>
+
+
+@code {
+    private string Result = "";
+    private string Error = "";
+
+    public string Stops = "";
+    public Railway Railway = new Railway();
+
+    // arg should be the JS click event
+    private void Run()
+    {
+        Reset();
+
+        int res;
+
+        try
+        {
+            res = new Route(Stops, Railway).Distance;
+
+            if (res <= 0)
+            {
+                throw new Exception("NO SUCH ROUTE");
+            }
+
+            Result = res.ToString();
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
+    }
+
+    private void Reset()
+    {
+        Result = "";
+        Error = "";
+    }
+
+}
