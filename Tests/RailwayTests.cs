@@ -1,15 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using Trains.Data;
 using Xunit;
 using Trains.Shared;
 using Xunit.Abstractions;
-using Route = Trains.Shared.Route;
+using Route = Trains.Data.Route;
 
 namespace Trains.Tests;
 
-public class RailwayTests 
+public class RailwayTests : TestBase
 {
-    private readonly Railway _railway = new Railway();
+    public RailwayTests(Railway railway) : base(railway)
+    {
+        //
+    }
 
-    // all routes to B are valid
     [InlineData("A", "B")]
     [InlineData("B", "B")]
     [InlineData("C", "B")]

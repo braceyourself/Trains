@@ -1,24 +1,45 @@
 using System.Linq.Expressions;
 using AngleSharp.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Trains.Data;
+using Route = Trains.Data.Route;
 
 namespace Trains.Shared;
 
 public class Railway
 {
-    public Dictionary<string, Dictionary<string, int>> Routes { get; set; } = new Dictionary<string, Dictionary<string, int>>();
-    
-    public Railway()
+    public Dictionary<string, Dictionary<string, int>> Routes { get; set; } =
+        new Dictionary<string, Dictionary<string, int>>();
+
+    private readonly IServiceScopeFactory scopeFactory;
+
+    public Railway(IServiceScopeFactory scopeFactory)
     {
-        AddRoute("AB5");
-        AddRoute("BC4");
-        AddRoute("CD8");
-        AddRoute("DC8");
-        AddRoute("DE6");
-        AddRoute("AD5");
-        AddRoute("CE2");
-        AddRoute("EB3");
-        AddRoute("AE7");
+        this.scopeFactory = scopeFactory;
+    }
+
+    public void LoadRoutes()
+    {
+        Routes = new Dictionary<string, Dictionary<string, int>>();
+
+        using (var scope = scopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+            var routes = context.Routes.ToList();
+            foreach (var route in routes)
+            {
+                AddRoute(route.Path);
+            }
+        }
+    }
+
+    public void EnsureRoutesLoaded()
+    {
+        if (Routes.Count == 0)
+        {
+            LoadRoutes();
+        }
     }
 
     public void AddRoute(string shorthand)
@@ -119,13 +140,13 @@ public class Railway
         {
             throw new ArgumentException($"Start node {start} not found");
         }
-        
-        if(!Routes.ContainsKey(end))
+
+        if (!Routes.ContainsKey(end))
         {
             throw new ArgumentException($"End node {end} not found");
         }
-        
-        
+
+
         List<Route> routes = new List<Route>();
 
         DepthFirstSearch(start, end, start, routes, maxStops);
@@ -147,20 +168,21 @@ public class Railway
 
 
     // recursive method for DFS traversal
-    private void DepthFirstSearch(string current, string destination, string currentPath, List<Route> routes, int maxStops = 10)
+    private void DepthFirstSearch(string current, string destination, string currentPath, List<Route> routes,
+        int maxStops = 10)
     {
         // Base case: if current town (not start) is the destination, add to routes
         if (currentPath.Length > 1 && current == destination)
         {
             routes.Add(new Route(currentPath, this));
         }
-        
+
         if (currentPath.Length > maxStops)
         {
             return;
         }
 
-        if (Routes.ContainsKey(current))
+        if (current != null && Routes.ContainsKey(current))
         {
             foreach (var neighbor in Routes[current])
             {

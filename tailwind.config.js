@@ -5,6 +5,15 @@ module.exports = {
     ],
     theme: {
         extend: {
+            animation: {
+                fadeOut: 'fade 3s ease-in-out',
+            },
+            keyframes: {
+                fade: {
+                    '0%': { opacity: '1' },
+                    '100%': { opacity: '0' },
+                }
+            },
             colors: {
                 'primary': '#19325d',
                 'secondary': '#f47424',

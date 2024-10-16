@@ -1,15 +1,23 @@
 ﻿@inherits LayoutComponentBase
+@using Blazor.Heroicons.Mini
 
 <div class="flex flex-col justify-between min-h-screen bg-gray-200">
     <div class="text-white w-full top-0 bg-primary text-4xl">
-        <div class="flex justify-between p-5">
-            <NavLink href="/" class="font-bold hover:text-secondary transition-colors">Kiwiland Rails</NavLink>
-            <a href="https://www.dealeron.com/" target="_blank">
-                <img src="images/dealeron.png" alt="dealeron" class="max-h-10">
-            </a>
+        <div class="flex flex-col-reverse md:flex-row gap-4 text-center md:text-left justify-between p-5">
+            <NavLink href="/" class="font-bold text-3xl hover:text-secondary transition-colors ">Kiwiland Rails</NavLink>
+
+            <div class="flex gap-4 justify-center">
+                <NavLink href="/settings" @click="modelOpen = !modelOpen"
+                         class="h-full p-2 text-white text-xs self-center hover:text-secondary hover:rotate-12 transition-colors">
+                    <Cog6ToothIcon class="w-8"></Cog6ToothIcon>
+                </NavLink>
+                <a href="https://www.dealeron.com/" target="_blank">
+                    <img src="images/dealeron.png" alt="dealeron" class="max-h-10">
+                </a>
+            </div>
         </div>
-        
-        <Nav  class="flex gap-5" />
+
+        <Nav class="flex gap-5"/>
     </div>
 
 

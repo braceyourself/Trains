@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Trains.Components;
+using Trains.Data;
 using Trains.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddDbContext<DatabaseService>(app =>
+{
+    app.UseSqlite(builder.Configuration.GetConnectionString("RoutesDB"));
+});
 
+builder.Services.AddSingleton<Railway>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+
+    if (!context.Database.CanConnect())
+    {
+        throw new Exception("Cannot connect to the database.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

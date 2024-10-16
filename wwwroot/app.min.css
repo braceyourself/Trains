@@ -600,8 +600,8 @@ video {
   position: relative;
 }
 
-.right-0 {
-  right: 0px;
+.-bottom-5 {
+  bottom: -1.25rem;
 }
 
 .top-0 {
@@ -610,6 +610,10 @@ video {
 
 .m-0 {
   margin: 0px;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .mx-auto {
@@ -625,6 +629,10 @@ video {
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
 }
 
 .mb-12 {
@@ -695,17 +703,24 @@ video {
   min-height: 100vh;
 }
 
-.w-full {
-  width: 100%;
+.w-20 {
+  width: 5rem;
 }
 
-.w-min {
-  width: -moz-min-content;
-  width: min-content;
+.w-5 {
+  width: 1.25rem;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-auto {
   width: auto;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .w-fit {
@@ -713,16 +728,22 @@ video {
   width: fit-content;
 }
 
-.w-5 {
-  width: 1.25rem;
-}
-
-.w-20 {
-  width: 5rem;
-}
-
 .flex-grow {
   flex-grow: 1;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fadeOut {
+  animation: fade 3s ease-in-out;
 }
 
 .cursor-pointer {
@@ -743,6 +764,10 @@ video {
 
 .flex-col {
   flex-direction: column;
+}
+
+.flex-col-reverse {
+  flex-direction: column-reverse;
 }
 
 .flex-wrap {
@@ -769,6 +794,10 @@ video {
   gap: 0.75rem;
 }
 
+.gap-4 {
+  gap: 1rem;
+}
+
 .gap-5 {
   gap: 1.25rem;
 }
@@ -777,8 +806,8 @@ video {
   gap: 2rem;
 }
 
-.text-nowrap {
-  text-wrap: nowrap;
+.self-center {
+  align-self: center;
 }
 
 .rounded {
@@ -874,6 +903,10 @@ video {
   padding: 0px;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -888,6 +921,11 @@ video {
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .px-4 {
@@ -905,6 +943,11 @@ video {
   padding-right: 1.5rem;
 }
 
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .py-12 {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -913,10 +956,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-.pt-1 {
-  padding-top: 0.25rem;
 }
 
 .text-center {
@@ -941,6 +980,11 @@ video {
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .text-xl {
@@ -975,6 +1019,11 @@ video {
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
+.text-success {
+  --tw-text-opacity: 1;
+  color: rgb(56 193 114 / var(--tw-text-opacity));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1000,6 +1049,17 @@ video {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.ring-secondary {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(244 116 36 / var(--tw-ring-opacity));
 }
 
 .drop-shadow {
@@ -1033,6 +1093,11 @@ html{
   display: none !important;
 }
 
+.hover\:rotate-12:hover {
+  --tw-rotate: 12deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .hover\:scale-105:hover {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -1064,13 +1129,8 @@ html{
 }
 
 @media (min-width: 768px) {
-  .md\:w-\[init\] {
-    width: init;
-  }
-
-  .md\:w-min {
-    width: -moz-min-content;
-    width: min-content;
+  .md\:w-auto {
+    width: auto;
   }
 
   .md\:w-fit {
@@ -1078,8 +1138,9 @@ html{
     width: fit-content;
   }
 
-  .md\:w-auto {
-    width: auto;
+  .md\:w-min {
+    width: -moz-min-content;
+    width: min-content;
   }
 
   .md\:grid-cols-2 {
@@ -1090,9 +1151,8 @@ html{
     flex-direction: row;
   }
 
-  .md\:px-0 {
-    padding-left: 0px;
-    padding-right: 0px;
+  .md\:text-left {
+    text-align: left;
   }
 }
 

@@ -1,9 +1,19 @@
 using Microsoft.AspNetCore.Components;
+using Trains.Shared;
 
-namespace Trains.Shared;
+namespace Trains.Data;
 
 public class Route
 {
+    public int Id { get; set; }
+    public string Path { get; set; }
+    private Railway Railway { get; set; }
+
+    public Route(string path)
+    {
+        Path = path;
+    }
+    
     public Route(string path, Railway railway)
     {
         Railway = railway;
@@ -19,8 +29,6 @@ public class Route
         Path = string.Join("", path.Values);
     }
     
-    public string Path { get; set; }
-    public Railway Railway { get; set; }
     public int Length
     {
         get { return Path.Length; }

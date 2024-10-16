@@ -1,0 +1,125 @@
+@page "/settings"
+@using AngleSharp.Common
+@using Blazor.Heroicons.Mini
+@using Microsoft.EntityFrameworkCore
+@inject Railway Railway
+@inject DatabaseService DB
+@rendermode InteractiveServer
+
+<div class="mb-10">
+    <div class="text-3xl">Route Settings</div>
+
+    <p class="text-gray-600">
+        Manage the routes available in the Kiwiland Rails system.
+    </p>
+</div>
+
+
+<div class="flex flex-col gap-4">
+    <div class="flex flex-col md:flex-row flex-wrap gap-3">
+        @for (int i = 0; i < Routes.Count; i++)
+        {
+            var ii = i;
+            <input @bind="Routes[ii].Path"
+                   @oninput="() => Saved = false"
+                   class="bg-gray-200 p-2 ring-1 ring-secondary rounded w-full md:w-fit"/>
+        }
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-3 relative">
+        <button class="text-sm text-white rounded bg-secondary py-1 px-2 w-full md:w-fit" @onclick="AddRoute">
+            <PlusIcon class="inline w-5"></PlusIcon>
+            Add Route
+        </button>
+
+        <button @onclick="Save" class="text-white p-1 px-2 rounded bg-primary w-full md:w-fit">
+            <ServerIcon class="inline w-5"></ServerIcon>
+            Save
+        </button>
+
+    </div>
+
+    @if (Saved)
+    {
+        <div class="relative">
+            <p class="text-success animate-fadeOut absolute -bottom-5"
+               x-data="{show: true}"
+               x-show="show"
+               x-init="setTimeout(() => show = false, 3000)">
+                <CheckBadgeIcon class="w-5 inline"></CheckBadgeIcon>
+                Saved
+            </p>
+        </div>
+    }
+
+
+    @if (Exception.Length > 0)
+    {
+        <div class="bg-danger p-3 rounded">
+            @Exception
+        </div>
+    }
+</div>
+
+
+@code{
+
+    public string Exception { get; set; } = "";
+    List<Route> Routes = new List<Route>();
+    private IJSObjectReference? module;
+    public bool Saved { get; set; } = false;
+
+    protected override Task OnInitializedAsync()
+    {
+        Railway.LoadRoutes();
+        Routes = DB.Routes.ToListAsync().Result;
+
+        return base.OnInitializedAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+    }
+
+    public void AddRoute()
+    {
+        Routes.Add(new Route(""));
+    }
+
+    /**
+     * save new routes
+     * update existing routes
+     */
+    public void Save()
+    {
+        Exception = "";
+
+        try
+        {
+            foreach (var route in Routes)
+            {
+                if (DB.Routes.Find(route.Id) == null)
+                {
+                    DB.Routes.Attach(route);
+                }
+                else
+                {
+                    DB.Routes.Update(route);
+                }
+            }
+
+            if (DB.SaveChanges() > 0)
+            {
+                Railway.LoadRoutes();
+                Saved = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Exception = e.InnerException != null && e.InnerException.Message.Length > 0
+                ? e.InnerException.Message
+                : e.Message;
+        }
+    }
+
+}

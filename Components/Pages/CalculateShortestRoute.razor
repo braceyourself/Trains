@@ -1,5 +1,6 @@
 @page "/shortest-route"
 @rendermode InteractiveServer
+@inject Railway Railway
 
 <h3 class="text-3xl">Shortest Route Calculator</h3>
 
@@ -32,7 +33,7 @@
                x-on:click="() => $event.target.select()"/>
     </label>
 
-    <button class="bg-secondary text-white p-2 px-5 rounded mt-4 w-auto md:w-fit" @onclick="Run">
+    <button class="bg-secondary text-white p-2 px-5 rounded mt-4 w-full" @onclick="Run">
         Calculate Shortest Route
     </button>
 
@@ -47,7 +48,7 @@
     {
         <div class="bg-secondary text-white rounded p-3 mt-3">
             <div>
-                The length of the shortest route (in terms of distance to travel) from @Start and @End:
+                The length of the shortest route (in terms of distance to travel) from @Start to @End:
             </div>
             <span class="text-3xl">@Result</span>
         </div>
@@ -62,8 +63,10 @@
     string Start = "";
     string End = "";
 
-    Railway _railway = new Railway();
-
+    protected override void OnInitialized()
+    {
+        Railway.EnsureRoutesLoaded();
+    }
 
     public void Run()
     {
@@ -78,7 +81,7 @@
                 return;
             }
 
-            Result = _railway.FindShortestRoute(Start, End).ToString();
+            Result = Railway.FindShortestRoute(Start, End).ToString();
         }
         catch (Exception e)
         {

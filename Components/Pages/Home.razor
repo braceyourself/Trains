@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Blazor.Heroicons.Mini
 
 <PageTitle>Home</PageTitle>
 
@@ -14,24 +15,40 @@
 
     <!-- Features Section -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        
+
         <NavLink href="/distance-calculator" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Route Distance Calculator</h2>
             <p class="text-gray-600">
                 Effortlessly calculate the total distance of any given train route across Kiwiland’s interconnected towns.
+
+                <span class="block p-3 bg-primary text-white w-fit m-auto rounded mt-2">
+                    <CalculatorIcon class="w-5 inline"></CalculatorIcon>
+                    Calculate Distance
+                </span>
             </p>
         </NavLink>
-        
+
         <NavLink href="/unique-routes" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Unique Route Finder</h2>
             <p class="text-gray-600">
                 Discover the number of unique routes between two towns, with customizable stop limits to meet your travel or logistical needs.
+
+                <span class="block p-3 bg-primary text-white w-fit m-auto rounded mt-2">
+                    <MagnifyingGlassIcon class="w-5 inline"></MagnifyingGlassIcon>
+                    Find Unique Routes
+                </span>
             </p>
         </NavLink>
+
         <NavLink href="/shortest-route" class="bg-white rounded-lg p-6 text-center shadow-2xl hover:scale-105 transition-transform cursor-pointer">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Shortest Path Finder</h2>
             <p class="text-gray-600">
                 Instantly determine the shortest route between any two towns, saving time and optimizing travel efficiency.
+
+                <span class="block p-3 bg-primary text-white w-fit m-auto rounded mt-2">
+                    <MapIcon class="w-5 inline"></MapIcon>
+                    Find Shortest Route 
+                </span>
             </p>
         </NavLink>
     </section>
@@ -43,6 +60,19 @@
             Filter routes based on exact stop counts, maximum distance, and more to tailor your rail journey.
         </p>
     </section>
+
+    <!-- Customize Routes in Settings -->
+    <section class="bg-white p-6 rounded-lg shadow-md text-center mb-12">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4">Customize Your Routes</h2>
+        <p class="text-lg text-gray-600">
+            Set your preferred route filters in the settings to optimize your travel experience. Whether you’re a frequent traveler or a rail operator, our platform provides you with the tools you need to plan your routes effectively.
+            <NavLink href="Settings" class="block p-3 bg-primary text-white w-fit m-auto rounded mt-2">
+                <Cog6ToothIcon class="w-5 inline"></Cog6ToothIcon>
+                Customize Routes
+            </NavLink>
+        </p>
+    </section>
+
 
     <!-- How It Works Section -->
     <section class="mb-12">
@@ -58,13 +88,6 @@
         <p class="text-lg text-gray-600">
             We understand the complexity of Kiwiland’s unique one-way railway system. Our goal is to make route planning effortless and insightful, whether for individual travelers or rail operators.
         </p>
-    </section>
-
-    <!-- Call to Action Section -->
-    <section class="text-center">
-        <a href="#" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600">
-            Start Planning Your Routes Today!
-        </a>
     </section>
 
 </div>

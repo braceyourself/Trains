@@ -2,13 +2,16 @@ using Microsoft.AspNetCore.Components;
 using Xunit;
 using Trains.Shared;
 using Xunit.Abstractions;
-using Route = Trains.Shared.Route;
+using Route = Trains.Data.Route;
 
 namespace Trains.Tests;
 
-public class RouteTests 
+public class RouteTests : TestBase
 {
-    private readonly Railway _railway = new Railway();
+    public RouteTests(Railway railway) : base(railway)
+    {
+        //
+    }
 
     [InlineData("ABC", 9)]
     [InlineData("AD", 5)]
