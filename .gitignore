@@ -6,3 +6,5 @@ riderModule.iml
 /_ReSharper.Caches/
 Trains.sln.DotSettings.user
 node_modules
+/database.sqlite-shm
+/database.sqlite-wal
